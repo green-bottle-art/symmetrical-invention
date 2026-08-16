@@ -57,8 +57,8 @@ int main(int argc, char* argv[])
         if(keyState[SDL_SCANCODE_ESCAPE]) isRunning = false;
         if(keyState[SDL_SCANCODE_LEFT] || keyState[SDL_SCANCODE_A]) rectX -= speed * deltaTime;
         if(keyState[SDL_SCANCODE_RIGHT] || keyState[SDL_SCANCODE_D]) rectX += speed * deltaTime;
-        if(keyState[SDL_SCANCODE_UP] || keyState[SDL_SCANCODE_W]) rectX -= speed * deltaTime;
-        if(keyState[SDL_SCANCODE_DOWN] || keyState[SDL_SCANCODE_S]) rectX += speed * deltaTime;
+        if(keyState[SDL_SCANCODE_UP] || keyState[SDL_SCANCODE_W]) rectY -= speed * deltaTime;
+        if(keyState[SDL_SCANCODE_DOWN] || keyState[SDL_SCANCODE_S]) rectY += speed * deltaTime;
 
         // Update logic
         // Logic, Collison detection dll
