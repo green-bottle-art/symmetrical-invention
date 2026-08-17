@@ -8,7 +8,7 @@ struct AppState
 {
     SDL_Window* window {nullptr};
     SDL_Renderer* renderer {nullptr};
-    bool isRunning {true};
+    // bool isRunning {true};
 };
 
 const int V_WIDTH = 800;
