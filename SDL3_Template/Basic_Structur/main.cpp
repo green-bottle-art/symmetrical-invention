@@ -1,6 +1,7 @@
 #define SDL_MAIN_USE_CALLBACKS 1 // Harus ada sebelum #include
 #include <SDL3/SDL.h>
 #include <SDL3/SDL_main.h>
+#include <new>
 
 
 /* Struktur untuk menyimpan seluruh state/data aplikasi*/
@@ -20,7 +21,8 @@ const int V_HEIGHT = 600;
 SDL_AppResult SDL_AppInit(void **appstate, int argc, char* argv[])
 {
     /* Alokasi memori untuk AppState*/
-    AppState *state {(AppState *)SDL_calloc(1, sizeof(AppState))};
+    // AppState *state {(AppState *)SDL_calloc(1, sizeof(AppState))};
+    AppState *state {new (std::nothrow) AppState()};
     if(!state)
     {
         return SDL_APP_FAILURE;
@@ -46,7 +48,9 @@ SDL_AppResult SDL_AppInit(void **appstate, int argc, char* argv[])
 /* Menangani event yang masuk dari pengguna atau sistem */
 SDL_AppResult SDL_AppEvent(void *appstate, SDL_Event *event)
 {
-    AppState *state {(AppState *)appstate};
+    // AppState *state {(AppState *)appstate};
+    auto *state {static_cast<AppState*>(appstate)};
+
     if (event ->type == SDL_EVENT_QUIT)
     {
         return SDL_APP_SUCCESS; // Program berhasil dijalankan dan berhenti
@@ -59,7 +63,9 @@ SDL_AppResult SDL_AppEvent(void *appstate, SDL_Event *event)
 /* Tempat logika utama atau perenderan*/
 SDL_AppResult SDL_AppIterate(void *appstate)
 {
-    AppState *state {(AppState *)appstate};
+    // AppState *state {(AppState *)appstate};
+    auto *state {static_cast<AppState*>(appstate)};
+
     /* Tempat Logic Update program*/
 
     /* Rendering */
@@ -76,7 +82,9 @@ SDL_AppResult SDL_AppIterate(void *appstate)
 /* Di panggil sekali saat akan keluar program*/
 void SDL_AppQuit(void *appstate, SDL_AppResult result)
 {
-    AppState *state {(AppState *)appstate};
+    // AppState *state {(AppState *)appstate};
+    auto *state {static_cast<AppState*>(appstate)};
+
 
     if (state)
     {
