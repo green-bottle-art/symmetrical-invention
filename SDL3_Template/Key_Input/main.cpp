@@ -76,12 +76,47 @@ SDL_AppResult SDL_AppEvent(void *appstate, SDL_Event *event)
 SDL_AppResult SDL_AppIterate(void *appstate)
 {
     AppState *state {(AppState *)appstate};
-    /* Tempat Logic Update program*/
+    
+    /* Delta Time dalam detik */
+    Uint64 curretTicks {SDL_GetTicks()};
+    float delta {(curretTicks - state->lastTick) / 1000.0f};
+    state->lastTick = curretTicks;
+
+    /* Mengambil state keyboard terus menerus untuk pergerakan yang mulus */
+    const bool *keys {SDL_GetKeyboardState(nullptr)};
+
+    if (keys[SDL_SCANCODE_W] || keys[SDL_SCANCODE_UP])
+    {
+        state->player.y -= state->speed * delta;
+    }
+    if (keys[SDL_SCANCODE_S] || keys[SDL_SCANCODE_DOWN])
+    {
+        state->player.y += state->speed * delta;
+    }
+    if (keys[SDL_SCANCODE_A] || keys[SDL_SCANCODE_LEFT])
+    {
+        state->player.x -= state->speed * delta;
+    }
+    if (keys[SDL_SCANCODE_D] || keys[SDL_SCANCODE_RIGHT])
+    {
+        state->player.x += state->speed * delta;
+    }
+
+    // Batasi agar player tidak keluar dari layar
+    if (state->player.x < 0) state->player.x = 0;
+    if (state->player.y < 0) state->player.y = 0;
+    if (state->player.x + state->player.w > 800) state->player.x = 800 - state->player.w;
+    if (state->player.y + state->player.h > 600) state->player.y = 600 - state->player.h;
 
     /* Rendering */
     SDL_SetRenderDrawColor(state->renderer, 30, 30,  30, 255);
     SDL_RenderClear(state->renderer);
     /* Tempat render Objek tambahan*/
+    /* Render Player */
+    // Kotak biru
+    SDL_SetRenderDrawColor(state->renderer, 50, 150, 250, 255);
+    SDL_RenderFillRect(state->renderer, &state->player);
+
 
     SDL_RenderPresent(state->renderer);
 
